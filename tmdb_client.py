@@ -1,5 +1,5 @@
 import requests
-import json
+import random
 
 def get_popular_movies():
     url = "https://api.themoviedb.org/3/movie/popular?language=pl-PL"
@@ -20,8 +20,6 @@ def get_movie_info():
     return movies_info
 
 def get_movies(how_many):
-    data = get_popular_movies()
-    return data['results'][:how_many]
-
-
+    data = random.sample(get_popular_movies()['results'],how_many)
+    return data
 
