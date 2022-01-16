@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+from movies_catalogue.tmdb_client import get_single_movie
 import tmdb_client
 
 app = Flask(__name__)
@@ -7,6 +8,11 @@ app = Flask(__name__)
 def homepage():
     movies = tmdb_client.get_movies(8)
     return render_template("homepage.html", movies=movies)
+
+@app.route("/movie/<movie_id>")
+def movie_details(movie_id):
+    movie_details = get_single_movie(movie_id)
+    return render_template("movie_details.html", movie_id=movie_id, movie=movie_details)
 
 @app.context_processor
 def utility_processor():
