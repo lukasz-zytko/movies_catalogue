@@ -16,18 +16,18 @@
         </select>
         </form>
     </div>
-    {% for movies in range(16) %}
+    {% for movie in movies %}
     <div class="col-lg-3 col-md-6 mb-4">
         <div class="card mb-4 box-shadow">
-            <img class="card-img-top" src="http://placehold.it/300x300" alt="">
+            <img class="card-img-top" src="{{ tmdb_image_url(movie.poster_path, "w342") }}" alt="">
             <div class="card-body">
-                <h4 class="card-title">Film {{ movies + 1 }}</h4>
-                <p class="card-text">opis filmu zawierający około 100 znaków, zajawka prezentująca film, zachęcająca do wejścia w szczegóły</p>
+                <h4 class="card-title">{{movie.title}}</h4>
+                <p class="card-text">{{movie.overview}}</p>
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
                         <a href="#" class="btn btn-dark">Pokaż więcej</a>
                     </div>
-                    <small class="text-muted">Ocena: 9.0</small>
+                    <small class="text-muted">Ocena: {{movie.vote_average}}</small>
                 </div>
             </div>
         </div>
