@@ -5,16 +5,23 @@
 <div class="row">
     <div class="col-lg-12 text-left">
         <h1 class="mt-5">Filmoteka: biblioteka najlepszych filmów</h1>
-        <p class="lead">Znajdziesz tutaj tylko sprawdzone tytuły (ocena IMDB powyżej 7)</p>
+        <p class="lead">Znajdziesz tutaj tylko sprawdzone tytuły!</p>
     </div>
-    <div style="margin-bottom: 5px;">
-        <form style="float: right;">
-        <select class="custom-select" id="inputGroupSelect03">
-          <option value="1" selected>8 na stronie</option>
-          <option value="2">12 na stronie</option>
-          <option value="3">24 na stronie</option>
-        </select>
-        </form>
+    <div class="col-lg-12 mb-4">
+        {% for name, name_pl in lists %}
+            {% if name==current_list %}
+                <a href="{{ url_for('homepage', list_name=name) }}" class="btn btn-outline-info active">{{name_pl}}</a>
+            {% else %}
+                <a href="{{ url_for('homepage', list_name=name) }}" class="btn btn-outline-info">{{name_pl}}</a>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div style="margin-bottom: 10px; text-align:right">
+        <p>Wyników na stronie:
+            {% for item in items %}
+                <a href="{{ url_for('homepage', list_name=current_list, how_many=item) }}" class="btn btn-outline-success btn-sm">{{ item }}</a>
+            {% endfor %}
+        </p>
     </div>
     {% for movie in movies %}
     <div class="col-lg-3 col-md-6 mb-4">

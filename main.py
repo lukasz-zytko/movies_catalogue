@@ -1,5 +1,5 @@
 from random import random
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import tmdb_client
 import random
 
@@ -7,8 +7,15 @@ app = Flask(__name__)
 
 @app.route('/')
 def homepage():
-    movies = tmdb_client.get_movies(8)
-    return render_template("homepage.html", movies=movies)
+    selected_list = request.args.get('list_name', "popular")
+    lists = [("popular", "Najpopularniejsze"), ("top_rated", "Najlepiej oceniane"), ("upcoming", "Nadchodzące"), ("now_playing", "Teraz grane")]
+    selected_items = request.args.get('how_many',8)
+    items = [8, 12, 16]
+    if selected_list not in lists:
+        movies = tmdb_client.get_movies(how_many=selected_items, list_name="popular")
+    else:
+        movies = tmdb_client.get_movies(how_many=selected_items, list_name=selected_list)
+    return render_template("homepage.html", movies=movies, current_list=selected_list, lists=lists, items=items, current_items=selected_items)
 
 @app.route("/movie/<movie_id>")
 def movie_details(movie_id):
