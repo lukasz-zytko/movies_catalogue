@@ -30,6 +30,14 @@ def movie_details(movie_id):
     random_image = random.choice(movie_images["backdrops"])
     return render_template("movie_details.html", movie_id=movie_id, movie=movie_details, cast=cast, random_image=random_image)
 
+@app.route("/search")
+def search():
+    query = request.args.get("q", "avatar")
+    search_results = tmdb_client.get_searched_movies(query)["results"]
+    results_number = tmdb_client.get_searched_movies(query)["total_results"]
+    return render_template("search.html", query=query, search_results=search_results, results_number=results_number)
+
+
 @app.context_processor
 def utility_processor():
     def tmdb_image_url(path, size):
