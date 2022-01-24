@@ -2,6 +2,7 @@ from random import random
 from flask import Flask, render_template, request
 import tmdb_client
 import random
+import datetime
 
 app = Flask(__name__)
 lists = {
@@ -37,6 +38,13 @@ def search():
     results_number = tmdb_client.get_searched_movies(query)["total_results"]
     return render_template("search.html", query=query, search_results=search_results, results_number=results_number)
 
+@app.route("/seriale")
+def seriale():
+    ile = request.args.get("how_many",8)
+    seriale = random.sample(tmdb_client.get_series()["results"],int(ile))
+    liczba = tmdb_client.get_series()["total_results"]
+    today = datetime.date.today()
+    return render_template("seriale.html", seriale=seriale, liczba=liczba, items=items, ile=ile, today=today)
 
 @app.context_processor
 def utility_processor():

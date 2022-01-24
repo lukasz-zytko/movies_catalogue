@@ -47,4 +47,7 @@ def get_searched_movies(search_querry):
     response.raise_for_status()
     return response.json()
 
-
+def get_series():
+    endpoint = f"https://api.themoviedb.org/3/tv/airing_today{language}"
+    response = requests.get(endpoint,headers=headers)
+    return response.json()
