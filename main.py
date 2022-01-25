@@ -1,5 +1,5 @@
 from random import random
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for, flash
 import tmdb_client
 import random
 import datetime
@@ -12,6 +12,8 @@ lists = {
     "now_playing": "Teraz grane"
 }
 items = [8, 12, 16]
+FAVORITES = set()
+app.secret_key = b'zosia'
 
 @app.route('/')
 def homepage():
@@ -45,6 +47,25 @@ def seriale():
     liczba = tmdb_client.get_series()["total_results"]
     today = datetime.date.today()
     return render_template("seriale.html", seriale=seriale, liczba=liczba, items=items, ile=ile, today=today)
+
+@app.route("/favorites/add", methods=["POST"])
+def add_to_favorites():
+    data = request.form
+    movie_id = data.get("movie_id")
+    movie_title = data.get("movie_title")
+    if movie_id and movie_title:
+        FAVORITES.add(movie_id)
+        flash(f"Film {movie_title} został dodany do ulubionych")
+    return redirect(url_for("homepage"))
+
+@app.route("/favorites")
+def favorites():
+    favorites = []
+    for fav in FAVORITES:
+        movie = tmdb_client.get_single_movie(fav)
+        favorites.append(movie)
+    return render_template("favorites.html", movies=favorites)
+
 
 @app.context_processor
 def utility_processor():
