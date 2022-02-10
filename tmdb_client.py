@@ -26,9 +26,9 @@ def get_single_movie_poster_url(movie_id):
     response = get_response(url_parameter=f"{movie_id}/images")
     return response.json()
 
-def get_poster_url(poster_path, size):
+def get_poster_url(poster_path, size="w342"):
     base_url = "https://image.tmdb.org/t/p/"
-    return f"{base_url}{size}{poster_path}"
+    return f"{base_url}{size}/{poster_path}"
 
 def get_movie_info(list_name="popular"):
     movies_info = {}
