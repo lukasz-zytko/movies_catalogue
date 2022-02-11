@@ -20,7 +20,7 @@ def get_single_movie(movie_id):
 
 def get_single_movie_cast(movie_id):
     response = get_response(url_parameter=f"{movie_id}/credits{language}")
-    return response.json()["cast"]
+    return response.json()
 
 def get_single_movie_poster_url(movie_id):
     response = get_response(url_parameter=f"{movie_id}/images")

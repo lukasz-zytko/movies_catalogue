@@ -1,3 +1,4 @@
+from cgi import test
 import tmdb_client
 from unittest.mock import Mock
 
@@ -16,28 +17,40 @@ def test_get_movies_list_type_popular():
     assert movies_list is not None
 
 def test_get_movies_list(monkeypatch):
-    # Lista, którą będziemy zwracać przysłonięte "zapytnie do API"
     mock_movies_list = ["Movie 1", "Movie 2"]
     request_mock = Mock()
-    # Wynik wywołania zapytania do API
     response = request_mock.return_value
-    # Przysłaniamy wynik wywołania metody .json()
     response.json.return_value = mock_movies_list
     monkeypatch.setattr("tmdb_client.get_response", request_mock)
 
     movies_list = tmdb_client.get_movies_list(list_name="popular")
     assert movies_list == mock_movies_list
 
+def test_single_movie_cast(monkeypatch):
+    mock_movie_cast = ["Actor 1", "Actor 2"]
+    request_mock = Mock()
+    response = request_mock.return_value
+    response.json.return_value = mock_movie_cast
+    monkeypatch.setattr("tmdb_client.get_response", request_mock)
+    movie_cast = tmdb_client.get_single_movie_cast(movie_id=1)
+    assert movie_cast == mock_movie_cast
 
-"""
-def some_function_to_mock():
-   raise Exception("Original was called")
+def test_get_response_endpoint(monkeypatch):
+    mock_endpoint = "https://api.themoviedb.org/3/movie/test"
+    endpoint_mock = Mock()
+    endpoint_mock.return_value = "https://api.themoviedb.org/3/movie/test"
+    monkeypatch.setattr("tmdb_client.requests.get", endpoint_mock)
+    test_endpoint = tmdb_client.get_response(url_parameter="test")
+    assert test_endpoint == mock_endpoint
 
-def test_mocking(monkeypatch):
-   my_mock = Mock()
-   my_mock.return_value = 2
-   monkeypatch.setattr("tests.test_tmdb.some_function_to_mock", my_mock)
-   result = some_function_to_mock()
-   assert result == 2
-"""
+def test_get_movies(monkeypatch):
+    how_many = 2
+    test_movies = ["Movie 1", "Movie 2"]
+    mock_list = Mock()
+    mock_list.return_value = test_movies
+    monkeypatch.setattr("tmdb_client.random.sample",mock_list)
+    movies = tmdb_client.get_movies(how_many=how_many, list_name="popular")
+    assert test_movies == movies
+
+
 
