@@ -51,5 +51,3 @@ def get_series():
     endpoint = f"https://api.themoviedb.org/3/tv/airing_today{language}"
     response = requests.get(endpoint,headers=headers)
     return response.json()
-
-print(type(get_response("popular")))
