@@ -1,8 +1,23 @@
-from email.policy import default
 import tmdb_client
 from unittest.mock import Mock
 from main import app
 import pytest
+
+@pytest.mark.parametrize("category, status", (
+  ("popular", 200),
+  ("top_rated", 200)
+))
+
+def test_homepage(monkeypatch, category, status):
+    api_mock = Mock(return_value={"results": []})
+    monkeypatch.setattr("tmdb_client.get_movies", api_mock)
+
+    with app.test_client() as client:
+        response = client.get("/")
+        assert response.status_code == status
+        api_mock.assert_called_once_with(how_many=8,list_name=category)
+
+
 """
 def test_get_poster_url_uses_default_size():
     # Przygotowanie danych
@@ -54,17 +69,5 @@ def test_get_movies(monkeypatch):
     movies = tmdb_client.get_movies(how_many=how_many, list_name="popular")
     assert test_movies == movies
 """
-@pytest.mark.parametrize("category, status", (
-  ("popular", 200),
-  ("top_rated", 200)
-))
 
-def test_homepage(monkeypatch, category, status):
-    api_mock = Mock(return_value={"results": []})
-    monkeypatch.setattr("tmdb_client.get_movies", api_mock)
-
-    with app.test_client() as client:
-        response = client.get("/")
-        assert response.status_code == status
-        api_mock.assert_called_once_with(how_many=8,list_name=category)
 
