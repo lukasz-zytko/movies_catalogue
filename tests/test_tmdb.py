@@ -5,7 +5,9 @@ import pytest
 
 @pytest.mark.parametrize("category, status", (
   ("popular", 200),
-  ("top_rated", 200)
+  ("top_rated", 200),
+  ("upcoming", 200),
+  ("now_playing", 200)
 ))
 
 def test_homepage(monkeypatch, category, status):
@@ -13,10 +15,9 @@ def test_homepage(monkeypatch, category, status):
     monkeypatch.setattr("tmdb_client.get_movies", api_mock)
 
     with app.test_client() as client:
-        response = client.get("/")
+        response = client.get(f"/?list_name={category}")
         assert response.status_code == status
         api_mock.assert_called_once_with(how_many=8,list_name=category)
-
 
 """
 def test_get_poster_url_uses_default_size():
@@ -69,5 +70,3 @@ def test_get_movies(monkeypatch):
     movies = tmdb_client.get_movies(how_many=how_many, list_name="popular")
     assert test_movies == movies
 """
-
-
