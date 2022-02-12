@@ -1,3 +1,4 @@
+from email.policy import default
 import tmdb_client
 from unittest.mock import Mock
 from main import app
