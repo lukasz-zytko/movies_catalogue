@@ -37,7 +37,7 @@ def get_movie_info(list_name="popular"):
         movies_info[movie["title"]] = {get_poster_url(movie["poster_path"],"w342"): movie["id"]}
     return movies_info
 
-def get_movies(how_many, list_name="popular"):
+def get_movies(how_many, list_name):
     data = random.sample(get_movies_list(list_name)["results"],int(how_many))
     return data
 

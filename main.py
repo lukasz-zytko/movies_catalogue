@@ -17,7 +17,7 @@ app.secret_key = b'zosia'
 
 @app.route('/')
 def homepage():
-    selected_list = request.args.get("list_name", "popular")   
+    selected_list = request.args.get("list_name", "top_rated")   
     selected_items = request.args.get("how_many",8) 
     if selected_list not in lists:
         movies = tmdb_client.get_movies(how_many=selected_items, list_name="popular")
