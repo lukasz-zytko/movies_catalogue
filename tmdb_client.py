@@ -1,8 +1,10 @@
 import requests
 import random
 
-token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyN2VlZjQ4MzYzYmM2MDQ1MjczMjUxYzQ1MzhlMjFjZSIsInN1YiI6IjYxZTAyZTFkNWJjZTllMDA0MTczZTE1ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.SZ_UayF2rFJDZtIdnlR2PpauRMVfxU-M8_I6LMYS2Vo"
-headers = {"Authorization": f"Bearer {token}"}
+import os
+API_TOKEN = os.environ.get("TMDB_API_TOKEN", "")
+
+headers = {"Authorization": f"Bearer {API_TOKEN}"}
 language = "?language=pl-PL"
 
 def get_response(url_parameter):
